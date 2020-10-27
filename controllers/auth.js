@@ -84,15 +84,20 @@ class AuthenticationController {
         if(!validPass)return res.status(401).json({error:'Password does not match'})
        
         
-        // return res.json({data:"Obinna You are here"})
         
         //Query to get the user Role and Permissions
-       let userRoleAndPerm = await Role.findById(user.role._id, ).populate("permission","_id name").select("_id name")
+       let userRoleAndPerm = await Role.findById(user.role._id, (err, result) => {
+           if(err || !result){
+               return res.json({error:"Invalid"})
+           }
+       }).populate("permission","_id name").select("_id name")
        
-       
+        
+
+      
         let extract_permission = userRoleAndPerm.permission
         let extract_role = userRoleAndPerm.name
-
+       
         
         
         //loop extract user permission and put into an array
@@ -112,10 +117,9 @@ class AuthenticationController {
                 id:user._id, 
                 email:user.email, 
                 surname:user.surname, 
-                firtname:user.firtst_name, 
+                firtname:user.first_name, 
                 salt:user.salt, 
                 verified:user.verified,
-                complete:account_complete,
                 role:extract_role, 
                 permission:user_permissions
             }, token})
