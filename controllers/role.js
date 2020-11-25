@@ -29,7 +29,7 @@ class RoleController {
     }
 
     getCustomerRole(req, res, next){
-        const id = "5f8d4d78cb4b3e1c9d566948"
+        const id = "5f97d76adbc6d25d2a9c137b"
         Role.findById(id).exec((err, role) => {
             if(err || !role) {
                 return res.status(400).json({

@@ -14,7 +14,7 @@ class TrustedHost {
        if(knownheaders.known_token == headerParams.source_token && knownheaders.known_platform == headerParams.platform ){
         next()
        } else {
-        res.json({message:"Request fro untrusted client"})
+        res.status(401).json({ status:false, message:"Untrusted client:from malicious source"})
        }
        
     }       

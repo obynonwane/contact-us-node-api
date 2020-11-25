@@ -1,20 +1,24 @@
 
+const User = require('../models/user')
 
 class requestValidator {
     signupValidator (req, res, next) {
         //name is not null and between 4 - 10 characters
         req.check('first_name', "First name is required").notEmpty()
         req.check('surname', "Surname is required").notEmpty()
-        req.check('email', "Email must be between 3 to 32 characters")
+        req.check('email', "Email required").notEmpty()
         .matches(/.+\@.+\..+/)
         .withMessage("Email must contain @")
         .isLength({
             min:4,
             max:2000
         })
+       
+        //Phone Validation
         req.check('phone', "Phone Number is required").notEmpty()
+ 
 
-     
+        //password validation
         req.check('password', "Password is required").notEmpty()
         req.check('password')
         .isLength({min:6})
@@ -24,11 +28,9 @@ class requestValidator {
        
         //compare password and comfirm password
         if(req.body.password != req.body.confirm_password){
-          res.status(400).json({error:'password not same as confirm password'})
+          return res.status(400).json({error:'Confirm Password not same as password'})
         }
 
-    
-    
         //check for all the errors and loop through to pick the first one
         const errors = req.validationErrors()
         if(errors){
@@ -41,6 +43,9 @@ class requestValidator {
         //proceed to next middleware
         next()
     }
+
+
 }
+
 
 module.exports = requestValidator

@@ -78,18 +78,15 @@ class UserController {
             .populate("lga")
             .populate("role")
             .then(result => {
-               const client = `${process.env.CLIENT_URL}`;
+               const base_url = `${process.env.CLIENT_URL}`;
 
-           
-           
                 let user_permission = []
 
                 Role.findById(result.role._id).populate('permission')
                   .then(response => {
                     let userPerm = response.permission
-                    console.log(userPerm)
+                
                     userPerm.map((perm) => {
-                        console.log(perm.name)
                         user_permission.push(perm.name)
                     })
 
@@ -99,7 +96,7 @@ class UserController {
                         surname:result.surname,
                         email:result.email,
                         phone:result.phone,
-                        photo:client+result.photo,
+                        photo:base_url+result.photo,
                         address:result.address,
                         street:result.street,
                         city:result.city,
@@ -112,7 +109,11 @@ class UserController {
                         permission:user_permission
                     })
                     
+                  }).catch(err => {
+                    return res.json({status:false, message:'User update failed', error:err})
                   })
+            }).catch(err => {
+                return res.json({status:false, message:'User update failed', error:err})
             })
     }
 }

@@ -1,5 +1,6 @@
 const express = require('express')
 //third party import
+const cors = require('cors')
 const dotenv = require('dotenv')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
@@ -11,7 +12,9 @@ const path = require('path');
 
 //excutes express
 const app = express()
+app.use(cors())
 const expressValidator = require('express-validator')
+
 
 
 //configure dotenv
